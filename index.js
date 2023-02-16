@@ -10,12 +10,21 @@ app.get("/", function(req,res){
   //só pode enviar uma resposta uma única vez
 });
 
-app.get("/blog", function(req, res){
-  res.send("Bem vindo(a) à página do meu blog!");
-});
+// app.get("/blog", function(req, res){
+//   res.send("Bem vindo(a) à página do meu blog!");
+// });
 
+
+//query params estão entrando em desuso
+//parametros fixos em rotas são mais seguros e mais utilizados
 app.get("/canal/youtube", function(req, res){
-  res.send("Bem vindo(a) à página do meu canal!");
+  var canal = req.query["canal"];
+
+  if(canal){
+    res.send(canal);    
+  } else {
+    res.send("Nenhum canal fornecido");
+  }
 });
 
 //valores dinâmicos nas rotas
@@ -26,6 +35,16 @@ app.get("/ola/:nome/:empresa", function(req, res){
   var empresa = req.params.empresa;
   res.send("Oi " + nome + " de " + empresa + "!");
   //a resposta mostra o parametro que tiver na rota
+});
+
+//parametros opcionais
+app.get("/blog/:artigo?", function(req, res){
+  var artigo = req.params.artigo;
+  if(artigo){
+    res.send("Artigo: " + artigo);
+  } else {
+    res.send("Bem vindo(a) à página do meu blog!");
+  }
 });
 
 app.listen(4000,function(erro){ //função chamada sempre que o servidor é iniciado, define a porta também
